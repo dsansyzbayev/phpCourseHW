@@ -406,23 +406,56 @@ function sorting($arr)
 
 #22
 
-$subject = file_get_contents('categories.csv');
+/*
+$arrCat = [];
+$file_handle = fopen('categories.csv', 'r');
+while (!feof($file_handle) ) {
+    $arrCat [] = fgetcsv($file_handle, 1165);
+}
+fclose($file_handle);
 
-$pattern = "/([0-9]+,)([0-9]+,)([А-Я][а-я]+( [а-я]+){0,})/u";
-$result = [];
+function categorize($arrCat)
+{
+$categ = [];
 
-preg_match_all($pattern,$subject,$result);
-
-$categories = [];
-
-foreach($result as $key => $value){
-    $categories = [
-        '1' => $result[1],
-        '2' => $result[2],
-        '3' => $result[3],
-    ];
+foreach($arrCat as $key => $value)
+{
+    if($value[1] == 0){
+    $categ[] = [ 
+            'id' => $value[0],
+            'id_parent' => $value[1],
+            'name' => $value[2],
+            'sub-categories' => categorize($arrCat)
+        ];
+    }
+}
+    return $categ;
 }
 
-print_r($categories);
+print_r(categorize($arrCat));
+*/
+#23
+
+$synon = [];
+$file_handle = fopen('synonyms-base.csv', 'r');
+while (!feof($file_handle) ) {
+    $synon [] = fgetcsv($file_handle, 1165);
+}
+fclose($file_handle);
+
+
+#print_r($synon);
+
+#24
+
+$pattern = '/<a href="(\/restoran\/.+\/)">(.+)<\/a>/u';
+$subject = file_get_contents('https://restolife.kz/restoran/');
+$result = [];
+
+preg_match_all($pattern,$subject, $result);
+
+$test = array_unique($result);
+
 
 ?>
+

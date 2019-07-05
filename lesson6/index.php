@@ -68,6 +68,14 @@ function getMaxPage($page)
     }
 }
 
-echo getMaxPage(1);
+$fullRestList = [];
+$maxPage = 3;
+
+for($i = 1; $i < $maxPage; $i++){
+    $fullRestList [] = getRestsFromPage($i);
+}
+
+print_r($fullRestList);
+
 
 ?>
