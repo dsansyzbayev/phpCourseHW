@@ -1,6 +1,7 @@
 <?php
 
 require "functions.php";
+require "db.php";
 
 $rests = [];
 $maxPage = getMaxPage(1);
@@ -11,29 +12,39 @@ for($i = 1; $i <= $maxPage; $i++ ){
 
 print_r($rests);
 
-$host = '127.0.0.1';
-$db   = 'cg_28_restaurants';
-$user = 'admin';
-$pass = '5153';
-$charset = 'utf8';
+$cuisines = [];
 
-$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
-$opt = [
-    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-    PDO::ATTR_EMULATE_PREPARES   => false,
-];
-$pdo = new PDO($dsn, $user, $pass, $opt);
+foreach($rests as $rest){
+    $cuisines = array_merge($cuisines, $rest['cuisine']);
+}
+$cuisines = array_unique($cuisines);
+print_r($cuisines);
 
-$stmt = $pdo->prepare("TRUNCATE `restaurant`");
+$stmt = $pdo->prepare("TRUNCATE `restaurants`");
+$stmt = $pdo->prepare("TRUNCATE `cuisines`");
+$stmt = $pdo->prepare("TRUNCATE `RCS");
 $stmt->execute();
+
+$stmt = $pdo->prepare("
+    INSERT INTO
+        `cuisines` (
+            `name`
+        ) VALUES (
+            :name
+        )
+");
+
+foreach($cuisines as $cuisine){
+    $stmt->execute([
+        ':name' => $cuisine
+    ]);
+}
 
 $stmt = $pdo->prepare("
     INSERT INTO
         `restaurants`(
             `name`,
             `link`,
-            `cuisine`,
             `price_min`,
             `price_max`,
             `worktime`,
@@ -41,7 +52,6 @@ $stmt = $pdo->prepare("
         ) VALUES (
             :n,
             :l,
-            :c,
             :p_min,
             :p_max,
             :wt,
@@ -53,7 +63,6 @@ foreach($rests as $rest){
     $stmt->execute([
         ':n' => $rest['name'],
         ':l' => $rest['link'],
-        ':c' => $rest['cuisine'],
         ':p_min' => $rest['price']['price_min'],
         ':p_max' => $rest['price']['price_max'],
         ':wt' => $rest['worktime'],

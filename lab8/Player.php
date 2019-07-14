@@ -47,6 +47,20 @@ class Player
         }
         return $return;
     }
+
+    public function getHeroAsArray()
+    {
+        $return =[];
+        foreach($this->heroes as $hero){
+            $return [] = [
+                'name' => $hero->getName(),
+                'damage' => $hero->getDamage(),
+                'hp' => $hero->getHP(),
+            ]; 
+        }
+
+        return $return;
+    }
 }
 
 ?>

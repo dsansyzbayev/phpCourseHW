@@ -17,38 +17,33 @@ for($i = 0; $i < 5; $i++){
 $birzhan = new Player('Birzhan', $heroes1);
 $kazyna = new Player('Kazyna', $heroes2);
 
-for($i = 0; $i < 1; $i+=0){
-    //echo 'Round <hr>';
+$json=[
+    'p1' => [
+        'name' => $birzhan->name,
+        'heroes' => $birzhan->getHeroAsArray(),
+    ],
+    'p2' => [
+        'name' => $kazyna->name,
+        'heroes' => $kazyna->getHeroAsArray(),
+    ]
+];
 
-    $winner=$birzhan->step($kazyna);
-
-    if($winner == null)
-    {
-        $winner=$kazyna->step($birzhan);
-    }
-
-    if($winner != null)
-    {
-        //echo 'Winner ' . $winner->name . '<hr>';
-        break;
-    }
-}
-
-$log = Logger::get()->getActivity();
-
-$supLog = [];
-
-foreach($log as $action){
-    //echo $action['hero-active']->getName() . ' attacks ' .
-    //$action['hero-passive']->getName() . ' ' . $action['damage'] . '<br>';
-    $supLog[]= [
-        'hero-active' => $action['hero-active']->getName(),
-        'hero-active-hp' => $action['hero-active-hp'],
-        'hero-passive' => $action['hero-passive']->getName(),
-        'hero-passive-hp' => $action['hero-passive-hp'],
-        'damage' => $action['damage']
-    ];
-}
-
-print_r($supLog);
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>.untitled</title>
+</head>
+<body>
+    <script>
+    var player = 
+    <?php echo json_encode($json);
+    ?>
+    </script>
+    <script src="main.js"></script>
+</body>
+</html>

@@ -47,20 +47,13 @@ function getRestsFromPage($page)
         if ($index !== false) {
             $rest[$key] = strip_tags($result[3][$index]);
         }
+        $rest['cuisine'] = ltrim($rest['cuisine']," 						");
     }
-
+    
     $rests[] = $rest;
     }
 
     return $rests;
 }
 
-$fullRestList = [];
-$maxPage = 18;
-
-for($i = 2; $i < $maxPage; $i++){
-    $fullRestList [] = getRestsFromPage($i);
-}
-
-print_r($fullRestList);
 ?>

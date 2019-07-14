@@ -372,6 +372,7 @@ $mArr = [
     345,
     375,
     976,
+    3,
     2985,
     [
         75,
@@ -384,77 +385,77 @@ $mArr = [
             384,
             953,
             835,
-            2,
             783,
             3464,
         ],
-        4454,
-        3454534,
-        34543,
     ],
-    93345,
-    3965,
-    496574,
 ];
 
 function sorting($arr)
-{ 
-    
+{   
+    if(is_array($arr) == true){
+        foreach($arr as $key => $value){
+            if(is_array($arr[$key]) == true){
+                $arr[$key] = sorting($arr[$key]);
+            }
+            else{
+                $t=count($arr)-1;
+                for($s=0;$s<$t;$s++){
+                    for($j=$s;$j<$t;$j++){
+                        if($arr[$s]<$arr[$j]){
+                            $tmp=$arr[$s];
+                            $arr[$s]=$arr[$j];
+                            $arr[$j]=$tmp;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return $arr;
 }
 
 #print_r(sorting($mArr));
 
 #22
 
-/*
+
 $arrCat = [];
+$catNam = [];
 $file_handle = fopen('categories.csv', 'r');
 while (!feof($file_handle) ) {
     $arrCat [] = fgetcsv($file_handle, 1165);
 }
 fclose($file_handle);
 
-function categorize($arrCat)
-{
-$categ = [];
+foreach($arrCat as $key => $value){
+    $catNam []= [
+        'id' => $value[0],
+        'id_parent' => $value[1],
+        'name' =>$value[2]
+    ];
+}
 
-foreach($arrCat as $key => $value)
-{
-    if($value[1] == 0){
-    $categ[] = [ 
-            'id' => $value[0],
-            'id_parent' => $value[1],
-            'name' => $value[2],
-            'sub-categories' => categorize($arrCat)
-        ];
+
+function buildTree($elements, $parentId = 0) {
+
+    $branch = [];    
+    foreach ($elements as $element) {
+        if ($element['id_parent'] == $parentId && $element['id'] != $element['id_parent']) {
+            $children = buildTree($elements, $element['id']);
+            if ($children) {
+                $element['sub-category'] = $children;
+            }
+            $branch[$element['id']] = $element;
+        }
     }
+    return $branch;
 }
-    return $categ;
-}
-
-print_r(categorize($arrCat));
-*/
-#23
-
-$synon = [];
-$file_handle = fopen('synonyms-base.csv', 'r');
-while (!feof($file_handle) ) {
-    $synon [] = fgetcsv($file_handle, 1165);
-}
-fclose($file_handle);
 
 
-#print_r($synon);
+print_r(buildTree($catNam));
 
-#24
-
-$pattern = '/<a href="(\/restoran\/.+\/)">(.+)<\/a>/u';
-$subject = file_get_contents('https://restolife.kz/restoran/');
-$result = [];
-
-preg_match_all($pattern,$subject, $result);
-
-$test = array_unique($result);
 
 
 ?>

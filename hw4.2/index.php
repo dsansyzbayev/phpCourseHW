@@ -1,6 +1,6 @@
 <?php
 
-$d1 = strtotime('January 1 2000');
+$d1 = strtotime('January 5 2000');
 $untilDay= abs(ceil(($d1-time())/60/60/24/7/52));
 $d2 = strtotime('January 1');
 $today = abs(ceil(($d2 - time())/60/60/24/7));

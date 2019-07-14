@@ -47,6 +47,10 @@ function getRestsFromPage($page)
         'price_max' => isset($digits[0][1]) ? $digits[0][1] : $digits[0][0],
     ];
     
+    $rest['cuisine'] = $rest['cuisine'] !== '' ? preg_split('/,\s+/',$rest['cuisine']) : [];
+    
+    //explode(', ', $rest['cuisine']);
+
     $rests[] = $rest;
 }
     return $rests; 
